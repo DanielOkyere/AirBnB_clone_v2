@@ -28,7 +28,7 @@ def do_pack():
     )
     try:
         print("Packing web_static to {}".format(output))
-        local("tar -cvzf {} web_static".format(output))
+        local("tar -cvzf {} ./web_static".format(output))
         archive_size = os.stat(output).st_size
         print("web_static packed: {} -> {} Bytes".format(output, archive_size))
     except Exeption:
@@ -52,7 +52,7 @@ def do_deploy(archive_path):
     try:
         put(archive_path, "/tmp/{}".format(file_name))
         run("mkdir -p {}".format(folder_path))
-        run("tar -C /tmp{} -xzf /tmp/{}".format(folder_path, file_name))
+        run("tar -xzf /tmp/{} -C {}".format(file_name, folder_path))
         run("rm -rf /tmp/{}".format(file_name))
         run("mv {}web_static/* {}".format(folder_path, folder_path))
         run("rm -rf {}web_static".format(folder_path))
@@ -67,16 +67,17 @@ def do_deploy(archive_path):
 
 def deploy():
     """
-    Archives and deploys the static files to the host servers
+    Archives and deploys the static files to the host servers.
     """
     archive_path = do_pack()
     return do_deploy(archive_path) if archive_path else False
 
+
 def do_clean(number=0):
     """
-    Deletes out of date archives of the static files
+    Deletes out-of-date archives of the static file
     Args:
-        number (Any): The number of archives to keep
+        number of archives to be kept.
     """
     archives = os.listdir('versions/')
     archives.sort(reverse=True)
@@ -94,5 +95,5 @@ def do_clean(number=0):
             "find /data/web_static/releases/ -maxdepth 1 -type d -iregex",
             " '/data/web_static/releases/web_static_.*'",
             " | sort -r | tr '\\n' ' ' | cut -d ' ' -f{}-)".format(start + 1)
-    ]
+            ]
     run(''.join(cmd_parts))
