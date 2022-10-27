@@ -24,11 +24,11 @@ def do_pack():
             c_time.day,
             c_time.hour,
             c_time.minute,
-            c_time.secon
+            c_time.second
     )
     try:
         print("Packing web_static to {}".format(output))
-        local("tar -cvzf {} web_static".format(output))
+        local("tar -cvzf {} ./web_static".format(output))
         archive_size = os.stat(output).st_size
         print("web_static packed: {} -> {} Bytes".format(output, archive_size))
     except Exeption:
