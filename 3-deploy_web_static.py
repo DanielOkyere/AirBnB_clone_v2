@@ -28,7 +28,7 @@ def do_pack():
     )
     try:
         print("Packing web_static to {}".format(output))
-        local("tar -cvzf {} web_static".format(output))
+        local("tar -cvzf {} ./web_static".format(output))
         archive_size = os.stat(output).st_size
         print("web_static packed: {} -> {} Bytes".format(output, archive_size))
     except Exeption:
@@ -52,7 +52,7 @@ def do_deploy(archive_path):
     try:
         put(archive_path, "/tmp/{}".format(file_name))
         run("mkdir -p {}".format(folder_path))
-        run("tar -C /tmp{} -xzf /tmp/{}".format(folder_path, file_name))
+        run("tar -xzf /tmp/{} -C {}".format(file_name, folder_path))
         run("rm -rf /tmp/{}".format(file_name))
         run("mv {}web_static/* {}".format(folder_path, folder_path))
         run("rm -rf {}web_static".format(folder_path))
@@ -67,7 +67,7 @@ def do_deploy(archive_path):
 
 def deploy():
     """
-    Archives and deploys the static files to the host servers
+    Archives and deploys the static files to the host servers.
     """
     archive_path = do_pack()
     return do_deploy(archive_path) if archive_path else False
