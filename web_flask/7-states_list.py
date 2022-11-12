@@ -25,7 +25,7 @@ def states_list():
 def close_db(exeption):
     """ Closes session for db"""
     storage.close()
-    
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
