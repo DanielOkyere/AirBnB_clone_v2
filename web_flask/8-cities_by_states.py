@@ -7,7 +7,6 @@ imports storage module
 from flask import Flask, render_template
 from models import storage
 from models.state import State
-from models.city import City
 
 
 app = Flask(__name__)
@@ -18,7 +17,7 @@ def states_list():
     """
     Lists all the states from db
     """
-    states = storage.all(State)
+    states = storage.all("State")
     return render_template('8-cities_by_states.html', states=states)
 
 
