@@ -17,7 +17,7 @@ def states_list():
     """
     Lists all the states from db
     """
-    states = storage.all("State")
+    states = storage.all(State)
     return render_template('8-cities_by_states.html', states=states)
 
 
